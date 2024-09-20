@@ -1,8 +1,14 @@
-from fastapi import APIRouter, Depends
-from auth.dependencies import get_cache
+from fastapi import APIRouter, HTTPException, Depends
+from auth.service import UserService
+from auth.models import UserRegistration
+from auth.dependencies import get_db, get_cache
+
 auth_router = APIRouter()
 
-@auth_router.get("/test")
-def test(cache=Depends(get_cache)):
-    cache.set("value", 0)
-    return f"It works ! it equals {int(cache.get('value')) + 1}"
+@auth_router.post("/register")
+def register_user(user:UserRegistration,
+                user_service: UserService = Depends(UserService),
+                db = Depends(get_db)):
+        
+        return user_service.register_user(user, db)
+ 
