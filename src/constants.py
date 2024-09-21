@@ -10,3 +10,6 @@ MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
 REDIS_HOST = os.getenv('REDIS_HOST')
 REDIS_PORT = os.getenv('REDIS_PORT')
 
+#Misc
+LOGGER_NAME = "Dailymotion WebApp Logger"
+
