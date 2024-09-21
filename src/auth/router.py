@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends
-from auth.service import UserService
-from auth.schemas import UserRegistration, ActivationCode
-from auth.dependencies import get_db, get_cache, get_basic_auth_credentials
+from src.auth.service import UserService
+from src.auth.schemas import UserRegistration, ActivationCode
+from src.auth.dependencies import get_db, get_cache, get_basic_auth_credentials
 
 auth_router = APIRouter()
 
-@auth_router.post("/register")
+@auth_router.post("/register", status_code=201)
 def register_user(user:UserRegistration,
                 user_service: UserService = Depends(UserService),
                 db = Depends(get_db),

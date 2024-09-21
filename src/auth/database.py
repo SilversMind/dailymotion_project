@@ -1,7 +1,8 @@
 import mysql.connector
-from auth.schemas import UserRegistration
-from auth.models import User
-from auth.security import get_password_hash
+from src.auth.schemas import UserRegistration
+from src.auth.models import User
+from src.auth.security import get_password_hash
+from src.auth.constants import ACTIVATION_CODE_EXPIRATION_TIME
 import mysql
 import redis
 
@@ -50,4 +51,4 @@ def user_exists(email: str, db : mysql.connector.connection.MySQLConnection):
         cursor.close()
 
 def cache_activation_code(email:str, activation_code:str, cache:redis.Redis):
-    cache.setex(name=email,time=60,value=activation_code)
+    cache.setex(name=email,time=ACTIVATION_CODE_EXPIRATION_TIME,value=activation_code)

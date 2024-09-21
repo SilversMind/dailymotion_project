@@ -2,10 +2,9 @@ from typing import Generator
 import redis
 import mysql.connector
 from fastapi import Header, HTTPException, status
-
 import base64
-from auth.schemas import UserRegistration
-from constants import MYSQL_HOST, MYSQL_PASSWORD, MYSQL_USER, REDIS_HOST, REDIS_PORT, MYSQL_DATABASE, LOGGER_NAME
+from src.auth.schemas import UserRegistration
+from src.constants import MYSQL_HOST, MYSQL_PASSWORD, MYSQL_USER, REDIS_HOST, REDIS_PORT, MYSQL_DATABASE, LOGGER_NAME
 import logging
 from pydantic import ValidationError
 

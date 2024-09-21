@@ -1,16 +1,16 @@
 import mysql.connector
-from auth.schemas import UserRegistration
-from auth.database import user_exists, save_user, cache_activation_code, get_user_by_email, activate_user
-from auth.utils import generate_activation_code
-from auth.email_client import send_mail
-from auth.security import password_matches
-from auth.models import User
-from auth.constants import ACTIVATION_CODE_LENGTH
+from src.auth.schemas import UserRegistration
+from src.auth.database import user_exists, save_user, cache_activation_code, get_user_by_email, activate_user
+from src.auth.utils import generate_activation_code
+from src.auth.email_client import send_mail
+from src.auth.security import password_matches
+from src.auth.models import User
+from src.auth.constants import ACTIVATION_CODE_LENGTH
 from fastapi import HTTPException, status
 import logging
 import mysql
 import redis
-from constants import LOGGER_NAME
+from src.constants import LOGGER_NAME
 
 logger = logging.getLogger(LOGGER_NAME)
 
@@ -32,7 +32,7 @@ class UserService:
                         db: mysql.connector.MySQLConnection,
                         cache:redis.Redis):
         stored_user : User = get_user_by_email(user.email, db)
-        if not user:
+        if not stored_user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="This account is not registered")
         
         if not password_matches(user.password, stored_user.hashed_password):

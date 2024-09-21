@@ -1,5 +1,5 @@
 import logging
-from constants import LOGGER_NAME
+from src.constants import LOGGER_NAME
 
 logger = logging.getLogger(LOGGER_NAME)
 

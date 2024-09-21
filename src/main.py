@@ -1,10 +1,8 @@
 from fastapi import FastAPI
-from auth.router import auth_router
-from contextlib import asynccontextmanager
-from db.initialize import init_db
+from src.auth.router import auth_router
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from constants import LOGGER_NAME
+from src.constants import LOGGER_NAME
 import logging
 
 logger = logging.getLogger(LOGGER_NAME)
@@ -18,12 +16,9 @@ console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    init_db()
-    yield
 
-app = FastAPI(lifespan=lifespan)
+
+app = FastAPI()
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request, exc):

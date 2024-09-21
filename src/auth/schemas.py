@@ -1,6 +1,6 @@
 from pydantic import BaseModel,field_validator, StringConstraints
 from typing_extensions import Annotated
-from auth.utils import validate_email
+from src.auth.utils import validate_email
 
 class UserRegistration(BaseModel):
     email: str

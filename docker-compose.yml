@@ -15,10 +15,8 @@ services:
       - REDIS_PORT=6379
       - MYSQL_HOST=mysql
       - MYSQL_PORT=3306
-      - MYSQL_DATABASE=dm_db
       - MYSQL_USER=dm_user
       - MYSQL_PASSWORD=dm_pass
-      - MYSQL_ROOT_PASSWORD=root_pass
 
   redis:
     image: "redis:alpine"
@@ -26,17 +24,18 @@ services:
       - "6379:6379"
 
   mysql:
-      image: mysql:latest
-      container_name: mysql_container
-      environment:
-        MYSQL_ROOT_PASSWORD: mypass
-        MYSQL_DATABASE: dm_db
-        MYSQL_USER: dm_user
-        MYSQL_PASSWORD: dm_pass
-      ports:
-        - "3306:3306"
-      volumes:
-        - mysql_data:/var/lib/mysql
+    image: mysql:latest
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_DATABASE: dm_db
+      MYSQL_USER: dm_user
+      MYSQL_PASSWORD: dm_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
 
 volumes:
   mysql_data:

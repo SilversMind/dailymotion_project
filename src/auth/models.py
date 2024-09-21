@@ -1,6 +1,6 @@
 from pydantic import BaseModel, field_validator
 from datetime import datetime
-from auth.utils import validate_email
+from src.auth.utils import validate_email
 
 class User(BaseModel):
     id: int
