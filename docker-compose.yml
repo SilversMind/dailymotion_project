@@ -17,6 +17,7 @@ services:
       - MYSQL_PORT=3306
       - MYSQL_USER=dm_user
       - MYSQL_PASSWORD=dm_pass
+      - MYSQL_DATABASE=dm_db
 
   redis:
     image: "redis:alpine"

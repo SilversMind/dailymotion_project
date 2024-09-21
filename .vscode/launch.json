@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "Python: FastAPI Remote (Docker)",
+            "type": "python",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",  // The host machine
+                "port": 5678          // The debug port
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",   // VSCode workspace root
+                    "remoteRoot": "/app"                 // The working directory inside the Docker container
+                }
+            ]
+        }
+    ]
+}
