@@ -6,6 +6,7 @@ import base64
 from src.auth.schemas import UserRegistration
 from src.constants import MYSQL_HOST, MYSQL_PASSWORD, MYSQL_USER, REDIS_HOST, REDIS_PORT, MYSQL_DATABASE, LOGGER_NAME
 import logging
+from typing import Union
 from pydantic import ValidationError
 
 logger = logging.getLogger(LOGGER_NAME)
@@ -29,9 +30,25 @@ def get_db() -> Generator[mysql.connector.MySQLConnection, None, None]:
         client.close()
 
 
-def get_basic_auth_credentials(authorization: str = Header(...)):
+def get_basic_auth_credentials(authorization: str = Header(...)) -> Union[UserRegistration,HTTPException]:
     """
-    Extract and decode Basic Auth credentials from the 'Authorization' header.
+    Extracts and decodes Basic Auth credentials from the 'Authorization' header.
+
+    This function checks if the provided authorization string uses Basic Auth. 
+    If valid, it decodes the credentials and returns a UserRegistration instance. 
+    If the format is invalid or the credentials are malformed, it raises 
+    an appropriate HTTPException.
+
+    Args:
+        authorization (str): The 'Authorization' header containing the Basic Auth credentials.
+
+    Raises:
+        HTTPException: 
+            - If the authorization header is missing or does not start with "Basic".
+            - If the credentials format is invalid or if decoding fails.
+
+    Returns:
+        UserRegistration: A UserRegistration object containing the email and password.
     """
     if not authorization.startswith("Basic "):
         raise HTTPException(

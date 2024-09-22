@@ -11,12 +11,34 @@ import logging
 import mysql
 import redis
 from src.constants import LOGGER_NAME
+from typing import Union
 
 logger = logging.getLogger(LOGGER_NAME)
 
 
 class UserService:
-    def register_user(self, user:UserRegistration, db: mysql.connector.MySQLConnection, cache:redis.Redis):
+    """
+    Service class for user registration and account activation.
+
+    This class handles user registration and account activation processes,
+    including checking for existing users, saving user data, generating 
+    activation codes, and sending activation emails.
+    """
+    def register_user(self, user:UserRegistration, db: mysql.connector.MySQLConnection, cache:redis.Redis) -> Union[dict[str, str], HTTPException]:
+        """
+        Registers a new user and sends an activation email.
+
+        Args:
+            user: The user registration data.
+            db: The MySQL database connection.
+            cache: The Redis cache instance.
+
+        Raises:
+            HTTPException: If the email is already taken or any other issue occurs.
+
+        Returns:
+            dict[str, str]: A success message indicating the registration status.
+        """
         if user_exists(user.email, db):
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This email is already taken")
         
@@ -30,7 +52,24 @@ class UserService:
                         user: UserRegistration,
                         activation_code: str,
                         db: mysql.connector.MySQLConnection,
-                        cache:redis.Redis):
+                        cache:redis.Redis) -> Union[dict[str, str], HTTPException]:
+        """
+        Activates a user's account using the provided activation code.
+
+        Args:
+            user: The user registration data.
+            activation_code: The activation code provided by the user.
+            db: The MySQL database connection.
+            cache: The Redis cache instance.
+
+        Raises:
+            HTTPException: If the user is not found, authentication fails, 
+                           the account is already activated, or the activation 
+                           code is invalid or expired.
+
+        Returns:
+            dict[str, str]: A success message indicating the activation status.
+        """
         stored_user : User = get_user_by_email(user.email, db)
         if not stored_user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="This account is not registered")
