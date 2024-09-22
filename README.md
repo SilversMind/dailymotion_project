@@ -33,7 +33,7 @@ This project aims to provide a robust framework for user account activation. You
 ### Architecture
 
 The current architecture is designed as follows:
-![Architecture schema](./fonctional/architecture_schema.png)
+![Architecture schema](./docs/architecture_schema.png)
 
 
 #### Components:
@@ -43,14 +43,14 @@ The current architecture is designed as follows:
 
 ### Account Registration Flow
 
-![Account registration flow](./fonctional/account_creation.png)
+![Account registration flow](./docs/account_creation.png)
 
 Note: The SMTP server has been mocked and the activation code is visible in the application server log after successful registration
 
 ```dailymotion_project-app-1    | 1995-12-13 12:00:00:000 - Dailymotion WebApp Logger - INFO - Sending activation code 5425 to johndoe@dailymotion.fr```
 
 ### Account Rctivation Flow
-![Account activation flow](./fonctional/code_activation.png)
+![Account activation flow](./docs/code_activation.png)
 
 
 ### Key Features
