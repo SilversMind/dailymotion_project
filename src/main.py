@@ -17,7 +17,7 @@ logger.addHandler(console_handler)
 
 
 
-
+logger.info("Starting Dailymotion server application...")
 app = FastAPI()
 
 @app.exception_handler(RequestValidationError)

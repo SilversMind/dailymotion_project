@@ -23,10 +23,15 @@ services:
     image: "redis:alpine"
     ports:
       - "6379:6379"
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    volumes:
+    - ./redis.conf:/usr/local/etc/redis/redis.conf 
 
   mysql:
     image: mysql:latest
     container_name: mysql_container
+    command:
+        - '--skip-log-bin'
     environment:
       MYSQL_ROOT_PASSWORD: root_pass
       MYSQL_DATABASE: dm_db
@@ -37,6 +42,8 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+      - ./conf.cnf:/etc/mysql/conf.d/custom_mysql.cnf
+      - ./logs:/var/log/mysql
 
 volumes:
   mysql_data:
