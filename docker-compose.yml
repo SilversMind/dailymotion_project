@@ -18,6 +18,8 @@ services:
       - MYSQL_USER=dm_user
       - MYSQL_PASSWORD=dm_pass
       - MYSQL_DATABASE=dm_db
+      - MAILHOG_HOST=smtp
+      - MAILHOG_PORT=1025
 
   redis:
     image: "redis:alpine"
@@ -26,6 +28,15 @@ services:
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     volumes:
     - ./redis.conf:/usr/local/etc/redis/redis.conf 
+
+  smtp:
+    image: mailhog/mailhog
+    logging:
+      driver: none
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"  # Web UI
 
   mysql:
     image: mysql:latest

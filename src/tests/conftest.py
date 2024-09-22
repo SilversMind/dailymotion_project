@@ -3,7 +3,7 @@ from typing import Generator
 import mysql.connector
 import redis
 from fastapi.testclient import TestClient
-from src.constants import MYSQL_HOST, MYSQL_PASSWORD, MYSQL_USER, MYSQL_TEST_DATABASE, REDIS_HOST, REDIS_PORT
+from src.constants import MYSQL_HOST, MYSQL_PASSWORD, MYSQL_USER, MYSQL_TEST_DATABASE, REDIS_HOST, REDIS_PORT, MYSQL_PORT
 from src.main import app
 from src.auth.dependencies import get_db, get_cache
 
@@ -28,7 +28,8 @@ def get_test_db() -> Generator[mysql.connector.MySQLConnection, None, None]:
         host=MYSQL_HOST,
         user=MYSQL_USER,
         password=MYSQL_PASSWORD,
-        database=MYSQL_TEST_DATABASE
+        database=MYSQL_TEST_DATABASE,
+        port=MYSQL_PORT
     )
     try:
         yield client
