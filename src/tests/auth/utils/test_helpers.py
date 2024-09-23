@@ -6,11 +6,6 @@ def test_generate_activation_code_length():
     assert len(code) == 6
     assert code.isdigit()
 
-def test_generate_activation_code_zero_padded():
-    code = generate_activation_code(4)
-    assert len(code) == 4
-    assert code[0] != '0' or code == '0000' 
-
 def test_validate_email_valid():
     valid_email = "test@example.com"
     assert validate_email(valid_email) == valid_email

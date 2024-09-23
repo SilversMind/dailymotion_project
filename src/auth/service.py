@@ -40,9 +40,13 @@ class UserService:
             dict[str, str]: A success message indicating the registration status.
         """
         if user_exists(user.email, db):
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This email is already taken")
-        
-        save_user(user, db)
+            stored_user = get_user_by_email(user.email, db)
+            if stored_user.activation_status:
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This email is already taken")
+            if cache.get(user.email):
+                return {"message": "Activation code is still valid. Please check your email."}
+        else:
+            save_user(user, db)
         activation_code = generate_activation_code(ACTIVATION_CODE_LENGTH)
         cache_activation_code(user.email, activation_code, cache)
         send_mail(user.email, activation_code)
