@@ -6,12 +6,12 @@ from src.auth.constants import ACTIVATION_CODE_EXPIRATION_TIME
 import mysql
 import redis
 
-def save_user(user: UserRegistration, db : mysql.connector.connection.MySQLConnection):
+def save_user(user: UserRegistration, db : mysql.connector.MySQLConnection):
     cursor = db.cursor()
     try:
         hashed_password = get_password_hash(user.password)
-        cursor.execute("INSERT INTO users (email, hashed_password) VALUES (%s, %s)", 
-                [user.email, hashed_password,])
+        cursor.execute("INSERT INTO users (email, phone_number, hashed_password) VALUES (%s,%s, %s)", 
+                [user.email, user.phone_number, hashed_password])
         db.commit()
     finally:
         cursor.close()

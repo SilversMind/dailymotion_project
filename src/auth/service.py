@@ -2,13 +2,12 @@ import mysql.connector
 from src.auth.schemas import UserRegistration
 from src.auth.database import user_exists, save_user, cache_activation_code, get_user_by_email, activate_user
 from src.auth.utils import generate_activation_code
-from src.auth.email_client import send_mail
+from src.auth.notify_client import EmailSender, SMSSender
 from src.auth.security import password_matches
 from src.auth.models import User
 from src.auth.constants import ACTIVATION_CODE_LENGTH
 from fastapi import HTTPException, status
 import logging
-import mysql
 import redis
 from src.constants import LOGGER_NAME
 from typing import Union
@@ -49,7 +48,15 @@ class UserService:
             save_user(user, db)
         activation_code = generate_activation_code(ACTIVATION_CODE_LENGTH)
         cache_activation_code(user.email, activation_code, cache)
-        send_mail(user.email, activation_code)
+        # We choose to send a SMS in prioriy, then fallback to the email
+        if user.phone_number:
+            notification_sender = SMSSender()
+            notification_sender.send_activation_code(user.phone_number, activation_code)
+
+        elif user.email:
+            notification_sender = EmailSender()
+            notification_sender.send_activation_code(user.email, activation_code)
+
         return {"message": "User registered sucessfully. Please check your email for the activation code"}
 
     def activate_account(self, 

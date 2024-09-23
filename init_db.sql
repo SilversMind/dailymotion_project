@@ -10,6 +10,7 @@ USE dm_db;
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
+    phone_number VARCHAR(100) UNIQUE,
     hashed_password VARCHAR(255) NOT NULL,
     activation_status TINYINT(1) NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -20,6 +21,7 @@ USE dm_test_db;
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
+    phone_number VARCHAR(100) UNIQUE,
     hashed_password VARCHAR(255) NOT NULL,
     activation_status TINYINT(1) NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

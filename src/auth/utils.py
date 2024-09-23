@@ -10,3 +10,11 @@ def validate_email(value: str) -> str:
     if not re.match(email_regex, value):
         raise ValueError('Invalid email address format')
     return value
+
+def validate_phone_number(value: str) -> str:
+    if value:
+        sms_regex  = r"^\+?[1-9]\d{9,14}$"
+        if not re.match(sms_regex, value):
+            raise ValueError('Invalid phone number format')
+    return value
+    
